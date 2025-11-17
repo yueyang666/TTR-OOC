@@ -1,0 +1,12 @@
+# general setting
+*.log
+
+# ros2_ws build folder
+build/
+install/
+log/
+test/
+
+# python
+__pycache__/
+
