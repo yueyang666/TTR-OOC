@@ -1,8 +1,7 @@
-# analyzer_node.py
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
-import ast
+import json
 
 class AnalyzerNode(Node):
     def __init__(self):
@@ -17,12 +16,15 @@ class AnalyzerNode(Node):
 
     def listener_callback(self, msg):
         try:
-            data = ast.literal_eval(msg.data)
-            speed = data.get('speed', '無資料')
-            battery = data.get('battery', '無資料')
-            self.get_logger().info(f"分析結果：速度 = {speed}，電量 = {battery}")
+            # 改用 json.loads() 解析資料
+            data = json.loads(msg.data)
+            pressure = data.get('PADS_Pressure', '無資料')
+            temp = data.get('PADS_Temp', '無資料')
+            self.get_logger().info(f"分析結果：壓力 = {pressure}，電量 = {temp}")
+        except json.JSONDecodeError as e:
+            self.get_logger().error(f"JSON 解析錯誤：{e}")
         except Exception as e:
-            self.get_logger().error(f"解析錯誤：{e}")
+            self.get_logger().error(f"未知錯誤：{e}")
 
 
 def main():

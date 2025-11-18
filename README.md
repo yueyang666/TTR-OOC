@@ -32,16 +32,30 @@
 
 
 ## Quick Start
-1. **建置並啟動 ROS2 節點**  
-   `source /opt/ros/<distro>/setup.bash && colcon build --symlink-install && source install/setup.bash`  
-   執行 `ros2 run py_serial_receive rf_receiver_node`（需要時可再開 `py_analyze` 訂閱端）。
-2. **啟動 rosbridge websocket**（前端需連線）  
-   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml`
-3. **啟動前端儀表板**  
+1. **請先下載倉庫**
+   ```bash
+   git clone https://github.com/yueyang666/TTR-OOC.git
+   ```
+
+2. **建置 ROS2 工作區**
+   ```bash
+   source /opt/ros/jazzy/setup.bash
+   colcon build
+   source install/setup.bash
+   ```  
+3. **啟動 ROS2 節點**
+   ```bash
+   ros2 run py_serial_receive rf_receiver_node
+   ``` 
+4. **啟動 rosbridge websocket**（前端需連線）  
+   ```bash
+   ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+   ``` 
+5. **啟動前端儀表板**  
    在 `ros2-dashboard` 執行 `npm install && npm run serve`，並確保 `src/App.vue` 內的 websocket URL 與 rosbridge 相符。
+6. **編譯網頁(optional)**  
+   在 `ros2-dashboard` 執行 `npm run build` 會產生 `/dist` 靜態檔案，可用 `serve -s dist`、Nginx 等靜態伺服器直接部署 `dist/` 內容。
 
 ## 專案結構
 - `src/`：ROS2 Python 封包 (`py_serial_receive`, `py_analyze`) 與設定
 - `ros2-dashboard/`：Vue 3 儀表板程式碼
-- `rf_receiver.log`：`rf_receiver_node` 產出的運行日誌（啟動後生成）
-

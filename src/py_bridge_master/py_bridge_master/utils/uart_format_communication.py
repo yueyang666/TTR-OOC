@@ -5,19 +5,19 @@ from ament_index_python.packages import get_package_share_directory
 def decode_packet(packet: bytes, json_path=None) -> dict:
     """根據 JSON 格式自動解碼 UART 封包"""
 
-    # 1️⃣ 若 json_path 沒指定 → 自動找 ROS2 share 目錄
+    # 若 json_path 沒指定 → 自動找 ROS2 share 目錄
     if json_path is None:
-        pkg_share = get_package_share_directory('py_serial_receive')
-        json_path = os.path.join(pkg_share, 'config', 'uart_format.json')  # ← 修正重點！
+        pkg_share = get_package_share_directory('py_bridge_master')
+        json_path = os.path.join(pkg_share, 'config', 'uart_format.json') 
 
-    # 2️⃣ 讀取 JSON
+    # 讀取 JSON
     if not os.path.exists(json_path):
         raise FileNotFoundError(f"找不到 JSON 檔案：{json_path}")
 
     with open(json_path, "r", encoding="utf-8") as f:
         cfg = json.load(f)
 
-    # 3️⃣ 協議設定
+    # 協議設定
     proto = cfg["protocol"]
     header = bytes(proto["header"])
     length_index = proto["length_index"]
@@ -29,7 +29,7 @@ def decode_packet(packet: bytes, json_path=None) -> dict:
 
     result = {}
 
-    # 4️⃣ 解碼每個欄位
+    # 解碼每個欄位
     for field in cfg["fields"]:
         name = field["name"]
         offset = field["offset"]
