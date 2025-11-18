@@ -31,4 +31,10 @@ setup(
             'rf_receiver_node = py_serial_receive.rf_receiver_node:main',
         ],
     },
+    # 指定使用的 Python 解釋器
+    options={
+        'build_scripts': {
+            'executable': '/home/alex/miniconda3/envs/ros_env/bin/python',
+        },
+    },
 )
